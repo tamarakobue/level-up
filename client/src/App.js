@@ -16,7 +16,7 @@ function App() {
   const history = useHistory()
 
   useEffect(() => {
-    fetch('http:localhost:3001/me')
+    fetch('http:localhost:3000/me')
     .then(response => {
       if(response.ok) {
         response.json()
@@ -36,7 +36,7 @@ function App() {
   }
 
   const logoutUser = () => {
-    fetch('http:localhost:3001/logout', {method: 'DELETE'})
+    fetch('http:localhost:3000/logout', {method: 'DELETE'})
     .then(() => {
       console.log('logged out')
       setLoggedIn(false)

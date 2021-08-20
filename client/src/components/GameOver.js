@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const GameOver = ({ finalScore, toggle }) => {
   useEffect(() => {
-    fetch("http://localhost:3001/users")
+    fetch("http://localhost:3000/users")
       .then((res) => res.json())
       .then((data) => {
         console.log("updated user score", data);
