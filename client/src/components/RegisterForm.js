@@ -9,7 +9,7 @@ const Register = ({handleLogin}) => {
 
   const handleSubmit = (event) => {
     event.preventDefault() //tries to send a post request
-    fetch("http://localhost:3000/register", {
+    fetch("/register", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

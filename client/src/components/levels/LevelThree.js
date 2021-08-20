@@ -65,7 +65,7 @@ const LevelThree = (props) => {
                 level_difficulty: levelDifficulty
             })}
         
-        fetch(`http://localhost:3000/levels/${levelId}/scores/${scoreId}`, headerConfig)
+        fetch(`/levels/${levelId}/scores/${scoreId}`, headerConfig)
         .then(response => response.json())
         
         .then(data => {
