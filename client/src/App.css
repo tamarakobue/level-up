@@ -1,38 +1,189 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: url('./images/new-bg.png');
+  background-repeat: repeat;
+  background-size: cover;
+  background-color: teal;
+  margin: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+.login-container {
+width: 600px;
+height: 600px;
+position: fixed;
+top: 50%;
+left: 50%;
+text-align: center;
+transform: translate(-50%, -50%);
+border-style: dashed;
+background-color: rgb(28, 128, 128);
+filter: drop-shadow(0 0 0.9rem black);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+
+.container {
+width: 100%;
+height: 100%;
 }
 
-.App-link {
-  color: #61dafb;
+.sidebar {
+height: 100%;
+width: 200px;
+position: fixed;
+z-index: 1;
+top: 0;
+left: 0;
+color: white;
+border-right-style: dashed;
+background-color: #111;
+overflow-x: hidden;
+margin: auto;
+padding: 16px;
+font-size: 18px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.sidebar h1 {
+color: white;
+margin: auto;
+padding: 16px;
+text-decoration: none;
+display: block;
+}
+
+.content {
+background-color: #111;
+margin-left: 200px;
+padding-left: 20px;
+height: 90px;
+
+}
+
+.game-container {
+width: 900px;
+height: 800px;
+position: fixed;
+top: 50%;
+left: 50%;
+text-align: center;
+transform: translate(-50%, -50%);
+border-style: dashed;
+background-color: rgb(255, 255, 255);
+}
+
+.inner-content {
+width: 900px;
+height: 800px;
+position: fixed;
+top: 50%;
+left: 50%;
+text-align: center;
+transform: translate(-50%, -50%);
+border-style: dashed;
+background-color: rgb(255, 255, 255);
+filter: drop-shadow(0 0 0.9rem black);
+}
+
+.level-one {
+width: 300px; 
+height: 300px;
+background-image: url('./images/levels/add.jpg') no repeat;
+background-size: cover;
+}
+
+.logo-main {
+font-family: Kidspace;
+font-size: 140px;
+
+}
+
+.logo {
+font-family: Kidspace;
+font-size: 70px;
+text-align: center;
+padding-bottom: 90px;
+color: whitesmoke;
+text-decoration: none;
+}
+
+.logo-form {
+font-family: Kidspace;
+font-size: 70px;
+text-align: center;
+padding-top: 90px;
+color: whitesmoke;
+text-decoration: none;
+}
+
+.score {
+float: right;
+margin: 45px;
+}
+
+.level-one-form {
+font-size: 90px;
+color:rgb(28, 128, 128);
+}
+
+.level-one-form input {
+width: 90px;
+height: 70px;
+font-size: 80px;
+
+}
+
+.login-form, center-p {
+text-align: center;
+}
+
+.equation {
+font-family: 'orange juice';
+font-size: 80px;
+}
+
+.level {
+width: 20%;
+display: inline-block;
+
+}
+
+.level-img {
+width: 50%;
+}
+
+.select-level {
+background-color: white;
+height: 500px;
+}
+
+.title {
+font-size: 70px;
+color:whitesmoke;
+margin-left: 900px;
+}
+
+.greeting {
+padding-bottom: 50px;
+padding-top: 50px;
+}
+
+.instructions {
+padding-top: 50px;
+}
+
+.spacer {
+opacity: 0.1;
+margin: 60px;
+}
+
+.button-warning {
+color: white;
+/* border-radius: 2px; */
+/* text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); */
+background: rgb(17, 100, 93);
+font-size: 110%;
 }
