@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react"
 import { Switch, Route, useHistory } from "react-router-dom"
 import Dashboard from "./pages/Dashboard"
 import Login from './pages/Login'
-import Navbar from "./components/Navbar"
 import RegisterForm from './components/RegisterForm'
 import LevelOne from "./components/levels/LevelOne"
 import LevelTwo from "./components/levels/LevelTwo"
@@ -49,7 +48,7 @@ function App() {
 
   return (
     <div className="App">
-      {/* <Navbar user={user} loggedIn={loggedIn} logoutUser={logoutUser} loginError={loginError}/> */}
+    
 
       <Switch>
         <Route exact path="/" render={routerProps => <Dashboard {...routerProps} loginUser={LoginUser} loggedIn={loggedIn} user={user} />}/>
