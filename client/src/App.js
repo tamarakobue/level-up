@@ -10,20 +10,25 @@ import LevelFour from "./components/levels/LevelFour"
 import './App.css';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [user, setUser] = useState({})
+  const [loggedIn, setLoggedIn] = useState()
+  const [user, setUser] = useState()
   const [loginError, setLoginError] = useState("")
   const history = useHistory()
 
   useEffect(() => {
+    // debugger
     fetch('/me')
     .then(response => {
+      // debugger
       if(response.ok) {
         response.json()
         .then( user => {
+          // debugger
           setLoggedIn(true)
           setUser(user)
-
+          // debugger
+          console.log('App User', user)
+          history.push('/')
         })
       }
     })
@@ -41,8 +46,9 @@ function App() {
       console.log('logged out')
       setLoggedIn(false)
       setUser({})
+      history.push('/')
     }) 
-    history.push('/')
+    
   }
 
 
@@ -51,11 +57,11 @@ function App() {
     
 
       <Switch>
-        <Route exact path="/" render={routerProps => <Dashboard {...routerProps} loginUser={LoginUser} loggedIn={loggedIn} user={user} />}/>
+
+        <Route exact path="/" render={routerProps => <Dashboard {...routerProps}logoutUser={logoutUser} loginUser={LoginUser} loggedIn={loggedIn} user={user} />}/>
 
         <Route exact path="/register" render={routerProps => <RegisterForm {...routerProps} loginUser={LoginUser}/>}/>
 
-        <Route exact path="/login" render={routerProps => <Login {...routerProps} loginUser={LoginUser} />}/>
 
         <Route path="level-one/" render={routerProps => <LevelOne {...routerProps} loginUser={LoginUser} />}/>
 

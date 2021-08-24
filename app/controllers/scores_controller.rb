@@ -39,6 +39,7 @@ class ScoresController < ApplicationController
     def update
         user = User.find_by(id: session[:user_id])
         score = user.scores.find_by(id: params[:id])
+        level = user.scores.level.find_by(level_difficulty: params[:level_difficulty])
         if score
             score.update(score_params)
             render json: score, include: :level

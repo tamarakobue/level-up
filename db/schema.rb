@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(version: 2021_08_19_203240) do
 
   create_table "levels", force: :cascade do |t|
-    t.string "level_difficulty"
+    t.string "level_difficulty", default: "Easy"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2021_08_19_203240) do
   create_table "scores", force: :cascade do |t|
     t.integer "user_id"
     t.integer "level_id"
-    t.integer "points"
+    t.integer "points", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

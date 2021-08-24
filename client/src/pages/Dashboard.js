@@ -1,17 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import ToggleLevels from "../components/ToggleLevels";
 import LevelOne from "../components/levels/LevelOne";
 import LevelTwo from "../components/levels/LevelTwo";
 import LevelThree from "../components/levels/LevelThree";
 import LevelFour from "../components/levels/LevelFour";
+import Login from './Login'
 
-const Dashboard = ({ user, handleLogout, loggedIn }) => {
+const Dashboard = ({ user, loginUser, logoutUser, loggedIn }) => {
+  const [levelToggle, setLevelToggle] = useState(false)
   const history = useHistory();
 
-  console.log('current user', user)
 
-  if (loggedIn === true) {
+
+  console.log('DASHBOARD current user', user)
+
+  if (user) {
+    let userLevel = []
+    if (user.levels[0].level_difficulty === 'Easy') {
+      userLevel = [
+      <LevelOne
+        user={user}
+      />]
+    } else if (user.levels[0].level_difficulty === 'Medium') {
+      userLevel = [
+      <LevelTwo
+        user={user}
+      />]
+    } else if (user.levels[0].level_difficulty === 'Hard') {
+      userLevel = [
+      <LevelThree
+        user={user}
+      />]
+    } else if (user.levels[0].level_difficulty === 'Expert') {
+      userLevel = [
+      <LevelFour
+        user={user}
+      />]
+    }
     return (
       <div className="container">
         {/* SIDEBAR */}
@@ -23,7 +48,7 @@ const Dashboard = ({ user, handleLogout, loggedIn }) => {
           </div>
 
           {/* LOGOUT */}
-          <button className="button-warning pure-button" onClick={handleLogout}>
+          <button className="button-warning pure-button" onClick={logoutUser}>
             Logout
           </button>
 
@@ -64,75 +89,18 @@ const Dashboard = ({ user, handleLogout, loggedIn }) => {
 
             {/* LEVELS */}
             <div className="level">
-              <ToggleLevels>
-                {({ on, toggle }) => (
-                  <div>
-                    {on && (
-                      <div toggle={toggle}>
-                        {user.levels[0].level_difficulty === "Easy" ? (
-                          user.levels.map((l) => (
-                            <LevelOne
-                              key={l.id}
-                              currentLevelDifficulty={l.level_difficulty}
-                              toggle={toggle}
-                              user={user}
-                            />
-                          ))
-                        ) : (
-                          <p></p>
-                        )}
 
-                        {user.levels[0].level_difficulty === "Medium" ? (
-                          user.levels.map((l) => (
-                            <LevelTwo
-                              key={l.id}
-                              currentLevelDifficulty={l.level_difficulty}
-                              toggle={toggle}
-                              user={user}
-                            />
-                          ))
-                        ) : (
-                          <p></p>
-                        )}
-
-                        {user.levels[0].level_difficulty === "Hard" ? (
-                          user.levels.map((l) => (
-                            <LevelThree
-                              key={l.id} id={l.id}
-                              currentLevelDifficulty={l.level_difficulty}
-                              toggle={toggle}
-                              user={user}
-                            />
-                          ))
-                        ) : (
-                          <p></p>
-                        )}
-
-                        {user.levels[0].level_difficulty === "Expert" ? (
-                          user.levels.map((l) => (
-                            <LevelFour
-                              key={l.id}
-                              currentLevelDifficulty={l.level_difficulty}
-                              toggle={toggle}
-                              user={user}
-                            />
-                          ))
-                        ) : (
-                          <p></p>
-                        )}
-                      </div>
-                    )}
-                    <button onClick={toggle}>BEGIN</button>
-                  </div>
-                )}
-              </ToggleLevels>
+              {levelToggle ? {userLevel} : <button onClick={setLevelToggle(true)}>Start</button>}
+            
             </div>
           </div>
         </div>
       </div>
     );
   } else {
-    history.push("/login");
+    return (
+      <Login loginUser={loginUser} logoutUser={logoutUser}/>
+    )
   }
 };
 

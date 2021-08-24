@@ -1,4 +1,4 @@
-import { useHistory } from "react-router-dom"
+import { useHistory, Link } from "react-router-dom"
 import React, { useState, useEffect } from 'react'
 import add from '../../images/levels/add.jpg'
 import GameOver from '../GameOver'
@@ -9,7 +9,7 @@ const LevelOne = (props) => {
     const [num2, setNum2] = useState(0)
     const [sum, setSum] = useState(0)
     const [score, setScore] = useState(0)
-    const [counter, setCounter] = useState(2)
+    const [counter, setCounter] = useState(8)
     const [levelId, setLevelId] = useState(0)
     const [scoreId, setScoreId] = useState(0)
     const [finalScore, setFinalScore] = useState(0)
@@ -44,18 +44,15 @@ const LevelOne = (props) => {
         setLevelId(props.user.levels[0].id)
         setCurrentScore(props.user.scores[0].points)
         setFinalScore(currentScore + score)
-        if (finalScore === 45) {
-            setLevelDifficulty('Medium')
-        }
         if (finalScore < 45) {
             setLevelDifficulty('Easy')
         }
-
+        if (finalScore > 45 && finalScore < 90) {
+            setLevelDifficulty('Medium')
+        } 
         if (counter === 0) {
              handleScoreUpdate()
         }
-         
-
 
     }
 
@@ -64,8 +61,6 @@ const LevelOne = (props) => {
     setNum1(Math.ceil(Math.random() * 10));
     setNum2(Math.ceil(Math.random() * 10));
   };
-
-    
 
 
   // UPDATE SCORES
@@ -111,7 +106,7 @@ const LevelOne = (props) => {
             {toggleGameOver ?  <GameOver toggle={props.toggle} finalScore={finalScore}/> : <button type="button" onClick={generateQuestion}>start game</button>}
            
             <p>score: {score}</p>
-            <button className='button-warning pure-button' onClick={props.toggle}>Back to Dashboard</button>
+            {/* <Link to='/'><button className="button-warning pure-button" onClick={history.push('/')}>Back to Dashboard</button></Link> */}
         </div>
     );
     

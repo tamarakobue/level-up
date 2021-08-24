@@ -12,6 +12,10 @@ Rails.application.routes.draw do
     resources :scores
   end
 
+  resources :scores do
+    resources :levels
+  end
+
   resources :users do
     resources :scores
   end

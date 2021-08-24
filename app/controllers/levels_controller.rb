@@ -22,6 +22,15 @@ class LevelsController < ApplicationController
         end
     end
 
+    def update
+        user = User.find_by(id: session[:user_id])
+        level = user.levels.find_by(id: params[:id])
+        level.update(level_params)
+            render json: level
+        else
+            render json: { error: "Not Authorized"}, status: :unauthorized
+        end
+
     def destroy
         user = User.find_by(id: session[:user_id])
         level = user.levels.find_by(id: params[:id])
@@ -34,7 +43,9 @@ class LevelsController < ApplicationController
         end
     end
 
-    private 
+    private
+
+    
 
     def level_params
         params.permit(:level_difficulty)

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useHistory } from "react-router-dom"
+import { useHistory, Link } from "react-router-dom"
 import GameOver from '../GameOver'
 import divide from '../../images/levels/divide.jpg'
 
@@ -48,12 +48,12 @@ const LevelFour = (props) => {
         setLevelId(props.user.levels[0].id)
         setCurrentScore(props.user.scores[0].points)
         setFinalScore(currentScore + score)
-        if (finalScore === 180) {
-            setLevelDifficulty('Master')
-        }
-        if (finalScore < 180 && finalScore > 135) {
-            setLevelDifficulty('Expert')
-        } 
+        // if (finalScore === 180) {
+        //     setLevelDifficulty('Master')
+        // }
+        // if (finalScore < 180 && finalScore > 135) {
+        //     setLevelDifficulty('Expert')
+        // } 
         const headerConfig = { 
              method: 'PATCH', 
              headers: { 
@@ -97,7 +97,7 @@ const LevelFour = (props) => {
         </form>
         {toggleGameOver ?  <GameOver /> : <button type="button" onClick={generateQuestion}>start game</button>}
         <p>score: {score}</p>
-        <button className='button-warning pure-button' onClick={props.toggle}>Back to Dashboard</button>
+        {/* <Link to='/'><button className="button-warning pure-button" onClick={history.push('/')}>Back to Dashboard</button></Link> */}
         </div>
     );
 }
