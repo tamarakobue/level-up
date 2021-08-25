@@ -89,8 +89,8 @@ const Dashboard = ({ user, loginUser, logoutUser, loggedIn }) => {
 
             {/* LEVELS */}
             <div className="level">
-
-              {levelToggle ? {userLevel} : <button onClick={setLevelToggle(true)}>Start</button>}
+            {userLevel}
+              {/* {levelToggle ?  : <button onClick={setLevelToggle(true)}>Start</button>} */}
             
             </div>
           </div>

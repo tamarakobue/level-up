@@ -13,12 +13,16 @@ const GameOver = ({ finalScore }) => {
       });
   }, []);
 
+  const root = () => {
+    window.location.reload(false)
+  }
+
   if (finalScore < 45) {
     return (
       <div className="game-container">
         <h1>Oh, No. Time is up. Better luck next time.</h1>
         <p>Your Final Score is: {finalScore}! You must get a total of 45 points to move to next level.</p>
-        <Link to='/'><button className="button-warning pure-button" onClick={history.push('/')}>Try Again</button></Link>
+        <Link to='/'><button className="button-warning pure-button" onClick={root}>Try Again</button></Link>
       </div>
     );
   } else {

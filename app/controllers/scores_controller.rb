@@ -1,5 +1,6 @@
 class ScoresController < ApplicationController
     before_action :authorized
+    # before_action :check_score, only: [:update]
 
     def index
         user = User.find_by(id: session[:user_id])
@@ -40,9 +41,23 @@ class ScoresController < ApplicationController
     def update
         user = User.find_by(id: session[:user_id])
         score = user.scores.find_by(id: params[:id])
-        level = user.scores.level.find_by(level_difficulty: params[:level_difficulty])
-        if score
-            score.update(score_params)
+        level = score.level.find_by(id: params[:id])
+        @level_difficulty = score.level.where(level_difficulty: params[:level_difficulty]).exists?
+        points = score.points
+            if points <= 45
+                @level_difficulty === Level.first.level_difficulty
+            end
+            if points >= 46 && points <= 90
+            @level_difficulty === Level.second.level_difficulty
+            end
+            if points >=91 && points <= 135
+                @level_difficulty === Level.third.level_difficulty
+            end
+            if points >= 135 
+                @level_difficulty === Level.last.level_difficulty
+            end
+            level.update(score_params[:level_attributes])
+        if score and score.update(score_params)
             render json: score, include: :level
         else
             render json: { error: "Not Authorized"}, status: :unauthorized
@@ -62,24 +77,25 @@ class ScoresController < ApplicationController
 
     private 
 
-    def check_score
-        user = User.find_by(id: session[:user_id])
-        points = user.scores.find_by(points: params[:points])
-        level - user.scores.level.find_by(level_difficulty: params[:level_difficulty])
+    # def check_score
+    #     user = User.find_by(id: session[:user_id])
+    #     score = user.scores.find_by(id: params[:id])
+    #     points = score.find_by(points: params[:points])&.points
+    #    ## level - user.scores.level.find_by(level_difficulty: params[:level_difficulty])
 
-        if points <= 45
-            level_difficulty === Level.first
-        end
-        if points >= 46 && points <= 90
-            level_difficulty === Level.second
-        end
-        if points >=91 && points <= 135
-            level_difficulty === Level.third
-        end
-        if points >= 135 
-            level_difficulty === Level.last
-        end
-    end
+    #     if points <= 45
+    #         @level_difficulty === Level.first.level_difficulty
+    #     end
+    #     if points >= 46 && points <= 90
+    #        @level_difficulty === Level.second.level_difficulty
+    #     end
+    #     if points >=91 && points <= 135
+    #         @level_difficulty === Level.third.level_difficulty
+    #     end
+    #     if points >= 135 
+    #         @level_difficulty === Level.last.level_difficulty
+    #     end
+    # end
 
     def score_params
         params.require(:score).permit(:points, :user_id, :level_id, level_attributes: [:level_difficulty])

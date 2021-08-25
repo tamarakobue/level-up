@@ -16,9 +16,15 @@ const LevelOne = (props) => {
     const [levelDifficulty, setLevelDifficulty] = useState('')
     const [currentScore, setCurrentScore] = useState(0)
     const [toggleGameOver, setToggleGameOver] = useState(false)
-    const [toggleScoreUpdate, setToggleScoreUpdate] = useState(false)
     const history = useHistory()
+    let updatedScore = 0
 
+
+    useEffect(() => {
+        setScoreId(props.user.scores[0].id)
+        setLevelId(props.user.levels[0].id)
+        setCurrentScore(props.user.scores[0].points)
+    })
 
     const startTimer = () => {
         const timer =
@@ -38,22 +44,10 @@ const LevelOne = (props) => {
         console.log('score check', score)
         generateQuestion()
         startTimer();
-
-        setScoreId(props.user.scores[0].id)
-        console.log('score id', scoreId) 
-        setLevelId(props.user.levels[0].id)
-        setCurrentScore(props.user.scores[0].points)
-        setFinalScore(currentScore + score)
-        if (finalScore < 45) {
-            setLevelDifficulty('Easy')
-        }
-        if (finalScore > 45 && finalScore < 90) {
-            setLevelDifficulty('Medium')
-        } 
         if (counter === 0) {
+            updatedScore = currentScore + score
              handleScoreUpdate()
         }
-
     }
 
   // GENERATE QUESTIONS
@@ -62,10 +56,9 @@ const LevelOne = (props) => {
     setNum2(Math.ceil(Math.random() * 10));
   };
 
-
   // UPDATE SCORES
     const handleScoreUpdate = () => {
-        
+       
        const headerConfig = { 
             method: 'PATCH', 
             headers: { 
@@ -73,11 +66,11 @@ const LevelOne = (props) => {
                 'Accept': 'application/json' 
             }, 
             body: JSON.stringify({
-                points: finalScore,
+                points: updatedScore,
                 level_difficulty: levelDifficulty
             })}
          
-        fetch(`/levels/${levelId}/scores/${1}`, headerConfig)
+        fetch(`/levels/${levelId}/scores/${scoreId}`, headerConfig)
         .then(response => response.json())
         
         .then(data => {
@@ -103,10 +96,10 @@ const LevelOne = (props) => {
                 </div>
                 <button type="submit">check</button>
             </form>
-            {toggleGameOver ?  <GameOver toggle={props.toggle} finalScore={finalScore}/> : <button type="button" onClick={generateQuestion}>start game</button>}
+            {toggleGameOver ?  <GameOver finalScore={updatedScore}/> : <button type="button" onClick={generateQuestion}>start game</button>}
            
             <p>score: {score}</p>
-            {/* <Link to='/'><button className="button-warning pure-button" onClick={history.push('/')}>Back to Dashboard</button></Link> */}
+            
         </div>
     );
     
