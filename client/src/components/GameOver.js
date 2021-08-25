@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 
-const GameOver = ({ finalScore }) => {
+const GameOver = ({ updatedScore }) => {
   const history = useHistory()
 
 
@@ -13,24 +13,24 @@ const GameOver = ({ finalScore }) => {
       });
   }, []);
 
-  const root = () => {
+  const back = () => {
     window.location.reload(false)
   }
 
-  if (finalScore < 45) {
+  if (updatedScore < 45) {
     return (
       <div className="game-container">
         <h1>Oh, No. Time is up. Better luck next time.</h1>
-        <p>Your Final Score is: {finalScore}! You must get a total of 45 points to move to next level.</p>
-        <Link to='/'><button className="button-warning pure-button" onClick={root}>Try Again</button></Link>
+        <p>Your Final Score is: {updatedScore}! You must get a total of 45 points to move to next level.</p>
+        <Link to='/'><button className="button-warning pure-button" onClick={back}>Try Again</button></Link>
       </div>
     );
   } else {
     return (
       <div className="game-container">
         <h1>Yay! You won!</h1>
-        <p>Your Final Score is: {finalScore}! Way to Go!.</p>
-        <Link to='/'><button className="button-warning pure-button" onClick={history.push('/')}>Next Level</button></Link>
+        <p>Your Final Score is: {updatedScore}! Way to Go!.</p>
+        <Link to='/'><button className="button-warning pure-button" onClick={back}>Next Level</button></Link>
       </div>
     );
   }

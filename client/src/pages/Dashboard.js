@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import LevelOne from "../components/levels/LevelOne";
 import LevelTwo from "../components/levels/LevelTwo";
 import LevelThree from "../components/levels/LevelThree";
@@ -7,9 +7,6 @@ import LevelFour from "../components/levels/LevelFour";
 import Login from './Login'
 
 const Dashboard = ({ user, loginUser, logoutUser, loggedIn }) => {
-  const [levelToggle, setLevelToggle] = useState(false)
-  const history = useHistory();
-
 
 
   console.log('DASHBOARD current user', user)

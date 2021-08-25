@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { useHistory, Link } from "react-router-dom"
+import React, { useState, useEffect } from 'react'
 import GameOver from '../GameOver'
 import divide from '../../images/levels/divide.jpg'
 
@@ -11,11 +10,35 @@ const LevelFour = (props) => {
     const [counter, setCounter] = useState(8)
     const [levelId, setLevelId] = useState(0)
     const [scoreId, setScoreId] = useState(0)
-    const [finalScore, setFinalScore] = useState(0)
     const [levelDifficulty, setLevelDifficulty] = useState('')
     const [currentScore, setCurrentScore] = useState(0)
     const [toggleGameOver, setToggleGameOver] = useState(false)
-    const history = useHistory()
+    let updatedScore = 0
+
+
+    const calculateLevelDiff = () => {
+        setScoreId(props.user.scores[0].id)
+        setLevelId(props.user.levels[0].id)
+        setCurrentScore(props.user.scores[0].points)
+    
+        {
+            if (updatedScore <= 45) {
+                setLevelDifficulty('Easy')
+            } else {
+                if (updatedScore >= 46 && updatedScore <= 90) {
+                    setLevelDifficulty('Medium')
+                } else if (updatedScore >= 91 && updatedScore <= 135) {
+                    setLevelDifficulty('Hard')
+                } else {
+                    if (updatedScore >= 135) {
+                        setLevelDifficulty('Expert')
+                    }
+                }
+
+                }
+            }
+    }
+
     
     const startTimer = () => {
         const timer =
@@ -34,6 +57,11 @@ const LevelFour = (props) => {
         }
         generateQuestion();
         startTimer();
+        if (counter === 0) {
+            updatedScore = currentScore + score
+            calculateLevelDiff()
+             handleScoreUpdate()
+        }
         
     }
     
@@ -42,18 +70,8 @@ const LevelFour = (props) => {
         setNum2(Math.ceil(Math.random() * 10));
     }
 
-    const handleScoreUpdate = (scoreId) => {
-        setScoreId(props.user.scores[0].id)
-        console.log('score id', scoreId) 
-        setLevelId(props.user.levels[0].id)
-        setCurrentScore(props.user.scores[0].points)
-        setFinalScore(currentScore + score)
-        // if (finalScore === 180) {
-        //     setLevelDifficulty('Master')
-        // }
-        // if (finalScore < 180 && finalScore > 135) {
-        //     setLevelDifficulty('Expert')
-        // } 
+    const handleScoreUpdate = () => {
+    
         const headerConfig = { 
              method: 'PATCH', 
              headers: { 
@@ -61,7 +79,7 @@ const LevelFour = (props) => {
                  'Accept': 'application/json' 
              }, 
              body: JSON.stringify({
-                 points: finalScore,
+                 points: updatedScore,
                  level_difficulty: levelDifficulty
              })}
           
@@ -75,11 +93,6 @@ const LevelFour = (props) => {
          setToggleGameOver(true)
      }
      
-     
-     if (score === 180 || counter === 0) {
-          return handleScoreUpdate()
-         // setToggleGameOver(true)
-     }
     
     return (
         <div className='game-container'>
@@ -95,9 +108,9 @@ const LevelFour = (props) => {
             </div>
             <button type="submit">check</button>
         </form>
-        {toggleGameOver ?  <GameOver /> : <button type="button" onClick={generateQuestion}>start game</button>}
+        {toggleGameOver ?  <GameOver finalScore={updatedScore}/> : <button type="button" onClick={generateQuestion}>start game</button>}
         <p>score: {score}</p>
-        {/* <Link to='/'><button className="button-warning pure-button" onClick={history.push('/')}>Back to Dashboard</button></Link> */}
+        
         </div>
     );
 }

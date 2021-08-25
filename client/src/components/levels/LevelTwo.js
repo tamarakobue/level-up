@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory, Link } from "react-router-dom"
 import GameOver from '../GameOver'
 import subtract from '../../images/levels/subtract.jpg'
 
@@ -12,11 +11,40 @@ const LevelTwo = (props) => {
     const [counter, setCounter] = useState(8)
     const [levelId, setLevelId] = useState(0)
     const [scoreId, setScoreId] = useState(0)
-    const [finalScore, setFinalScore] = useState(0)
     const [levelDifficulty, setLevelDifficulty] = useState('')
     const [currentScore, setCurrentScore] = useState(0)
     const [toggleGameOver, setToggleGameOver] = useState(false)
-    const history = useHistory()
+    let updatedScore = 0
+
+
+    const calculateLevelDiff = () => {
+        setScoreId(props.user.scores[0].id)
+        setLevelId(props.user.levels[0].id)
+        setCurrentScore(props.user.scores[0].points)
+    
+        {
+            if (updatedScore <= 45) {
+                setLevelDifficulty('Easy')
+            } else {
+                if (updatedScore >= 46 && updatedScore <= 90) {
+                    setLevelDifficulty('Medium')
+                } else if (updatedScore >= 91 && updatedScore <= 135) {
+                    setLevelDifficulty('Hard')
+                } else {
+                    if (updatedScore >= 135) {
+                        setLevelDifficulty('Expert')
+                    }
+                }
+
+                }
+            }
+    }
+
+    const startTimer = () => {
+        const timer =
+            counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+        return () => clearInterval(timer);
+    }
 
     const submit = (e) => {
         e.preventDefault();
@@ -29,12 +57,11 @@ const LevelTwo = (props) => {
         }
         generateQuestion();
         startTimer();
-    }
-
-    const startTimer = () => {
-        const timer =
-            counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
-        return () => clearInterval(timer);
+        if (counter === 0) {
+            updatedScore = currentScore + score
+            calculateLevelDiff()
+             handleScoreUpdate()
+        }
     }
     
 
@@ -43,18 +70,8 @@ const LevelTwo = (props) => {
         setNum2(Math.ceil(Math.random() * 10));
   }
 
-  const handleScoreUpdate = (scoreId) => {
-    setScoreId(props.user.scores[0].id)
-    console.log('score id', scoreId) 
-    setLevelId(props.user.levels[0].id)
-    setCurrentScore(props.user.scores[0].points)
-    setFinalScore(currentScore + score)
-    if (finalScore === 90) {
-        setLevelDifficulty('Hard')
-    }
-    if (finalScore > 45 && finalScore < 90) {
-        setLevelDifficulty('Medium')
-    } 
+  const handleScoreUpdate = () => {
+    
     const headerConfig = { 
          method: 'PATCH', 
          headers: { 
@@ -62,7 +79,7 @@ const LevelTwo = (props) => {
              'Accept': 'application/json' 
          }, 
          body: JSON.stringify({
-             points: finalScore,
+             points: updatedScore,
              level_difficulty: levelDifficulty
          })}
       
@@ -76,11 +93,6 @@ const LevelTwo = (props) => {
         setToggleGameOver(true)
     }
     
-    
-    if (score === 90 || counter === 0) {
-        return handleScoreUpdate()
-        // setToggleGameOver(true)
-    }
     
     return (
         <div className='game-container'>
@@ -96,9 +108,8 @@ const LevelTwo = (props) => {
             </div>
             <button type="submit">check</button>
         </form>
-        {toggleGameOver ?  <GameOver /> : <button type="button" onClick={generateQuestion}>start game</button>}
+        {toggleGameOver ?  <GameOver updatedScore={updatedScore}/> : <button type="button" onClick={generateQuestion}>start game</button>}
         <p>score: {score}</p>
-        {/* <Link to='/'><button className="button-warning pure-button" onClick={history.push('/')}>Back to Dashboard</button></Link> */}
         </div>
     );
 }

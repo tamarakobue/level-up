@@ -1,4 +1,3 @@
-import { useHistory, Link } from "react-router-dom"
 import React, { useState, useEffect } from 'react'
 import add from '../../images/levels/add.jpg'
 import GameOver from '../GameOver'
@@ -12,19 +11,30 @@ const LevelOne = (props) => {
     const [counter, setCounter] = useState(8)
     const [levelId, setLevelId] = useState(0)
     const [scoreId, setScoreId] = useState(0)
-    const [finalScore, setFinalScore] = useState(0)
-    const [levelDifficulty, setLevelDifficulty] = useState('')
+    // const [levelDifficulty, setLevelDifficulty] = useState('')
     const [currentScore, setCurrentScore] = useState(0)
     const [toggleGameOver, setToggleGameOver] = useState(false)
-    const history = useHistory()
     let updatedScore = 0
 
 
-    useEffect(() => {
-        setScoreId(props.user.scores[0].id)
-        setLevelId(props.user.levels[0].id)
-        setCurrentScore(props.user.scores[0].points)
-    })
+    const calculateLevelDiff = () => {
+        // setScoreId(props.user.scores[0].id)
+        // setLevelId(props.user.levels[0].id)
+        // debugger
+        let level = ''
+        if (updatedScore < 45) {
+            level = 'Easy'
+        } else if (updatedScore >= 45 && updatedScore < 90) {
+            level = 'Medium'
+        } else if (updatedScore >= 90 && updatedScore < 135) {
+            level = 'Hard'
+        } else {
+            level = 'Expert'
+        }
+        return level;
+    }
+        
+        
 
     const startTimer = () => {
         const timer =
@@ -44,7 +54,9 @@ const LevelOne = (props) => {
         console.log('score check', score)
         generateQuestion()
         startTimer();
+        
         if (counter === 0) {
+            setCurrentScore(props.user.scores[0].points)
             updatedScore = currentScore + score
              handleScoreUpdate()
         }
@@ -58,7 +70,9 @@ const LevelOne = (props) => {
 
   // UPDATE SCORES
     const handleScoreUpdate = () => {
-       
+        setScoreId(props.user.scores[0].id)
+        console.log(props)
+        setLevelId(props.user.levels[0].id)
        const headerConfig = { 
             method: 'PATCH', 
             headers: { 
@@ -67,10 +81,14 @@ const LevelOne = (props) => {
             }, 
             body: JSON.stringify({
                 points: updatedScore,
-                level_difficulty: levelDifficulty
+                level_attributes:  {
+                    level_difficulty: calculateLevelDiff()
+                }
+                
             })}
-         
-        fetch(`/levels/${levelId}/scores/${scoreId}`, headerConfig)
+        // debugger
+        fetch(`/levels/${props.user.levels[0].id}/scores/${props.user.scores[0].id
+        }`, headerConfig)
         .then(response => response.json())
         
         .then(data => {
