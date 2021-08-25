@@ -40,7 +40,7 @@ class ScoresController < ApplicationController
     def update
         user = User.find_by(id: session[:user_id])
         score = user.scores.find_by(id: params[:id])
-        byebug
+        # byebug
         score.update(score_params)
         render json: score, include: :level
     end

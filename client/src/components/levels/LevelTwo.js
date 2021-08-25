@@ -11,38 +11,30 @@ const LevelTwo = (props) => {
     const [counter, setCounter] = useState(8)
     const [levelId, setLevelId] = useState(0)
     const [scoreId, setScoreId] = useState(0)
-    const [levelDifficulty, setLevelDifficulty] = useState('')
     const [currentScore, setCurrentScore] = useState(0)
     const [toggleGameOver, setToggleGameOver] = useState(false)
     let updatedScore = 0
 
 
     const calculateLevelDiff = () => {
-        setScoreId(props.user.scores[0].id)
-        setLevelId(props.user.levels[0].id)
-        setCurrentScore(props.user.scores[0].points)
-    
-        {
-            if (updatedScore <= 45) {
-                setLevelDifficulty('Easy')
-            } else {
-                if (updatedScore >= 46 && updatedScore <= 90) {
-                    setLevelDifficulty('Medium')
-                } else if (updatedScore >= 91 && updatedScore <= 135) {
-                    setLevelDifficulty('Hard')
-                } else {
-                    if (updatedScore >= 135) {
-                        setLevelDifficulty('Expert')
-                    }
-                }
-
-                }
-            }
+        let level = ''
+        if (updatedScore < 45) {
+            level = 'Easy'
+        } else if (updatedScore >= 45 && updatedScore < 90) {
+            level = 'Medium'
+        } else if (updatedScore >= 90 && updatedScore < 135) {
+            level = 'Hard'
+        } else {
+            level = 'Expert'
+        }
+        return level;
     }
+        
+    
 
     const startTimer = () => {
         const timer =
-            counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+            counter > 0 && setTimeout(() => setCounter(counter - 1), 2000);
         return () => clearInterval(timer);
     }
 
@@ -57,9 +49,10 @@ const LevelTwo = (props) => {
         }
         generateQuestion();
         startTimer();
+        
         if (counter === 0) {
+            setCurrentScore(props.user.scores[0].points)
             updatedScore = currentScore + score
-            calculateLevelDiff()
              handleScoreUpdate()
         }
     }
@@ -71,7 +64,9 @@ const LevelTwo = (props) => {
   }
 
   const handleScoreUpdate = () => {
-    
+    setScoreId(props.user.scores[0].id)
+    console.log(props)
+    setLevelId(props.user.levels[0].id)
     const headerConfig = { 
          method: 'PATCH', 
          headers: { 
@@ -80,10 +75,12 @@ const LevelTwo = (props) => {
          }, 
          body: JSON.stringify({
              points: updatedScore,
-             level_difficulty: levelDifficulty
+             level_attributes:  {
+                level_difficulty: calculateLevelDiff()
+            }
          })}
       
-        fetch(`/levels/${levelId}/scores/${scoreId}`, headerConfig)
+        fetch(`/levels/${props.user.levels[0].id}/scores/${props.user.scores[0].id}`, headerConfig)
         .then(response => response.json())
         
         .then(data => {

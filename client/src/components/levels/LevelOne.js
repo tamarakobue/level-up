@@ -18,9 +18,6 @@ const LevelOne = (props) => {
 
 
     const calculateLevelDiff = () => {
-        // setScoreId(props.user.scores[0].id)
-        // setLevelId(props.user.levels[0].id)
-        // debugger
         let level = ''
         if (updatedScore < 45) {
             level = 'Easy'
@@ -87,8 +84,7 @@ const LevelOne = (props) => {
                 
             })}
         // debugger
-        fetch(`/levels/${props.user.levels[0].id}/scores/${props.user.scores[0].id
-        }`, headerConfig)
+        fetch(`/levels/${props.user.levels[0].id}/scores/${props.user.scores[0].id}`, headerConfig)
         .then(response => response.json())
         
         .then(data => {
@@ -114,7 +110,7 @@ const LevelOne = (props) => {
                 </div>
                 <button type="submit">check</button>
             </form>
-            {toggleGameOver ?  <GameOver finalScore={updatedScore}/> : <button type="button" onClick={generateQuestion}>start game</button>}
+            {toggleGameOver ?  <GameOver score={score}/> : <button type="button" onClick={generateQuestion}>start game</button>}
            
             <p>score: {score}</p>
             

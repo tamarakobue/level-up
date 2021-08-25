@@ -53,7 +53,9 @@ const Dashboard = ({ user, loginUser, logoutUser, loggedIn }) => {
           <p>Current Score: {user.scores[0].points}</p>
           <hr className="spacer" />
 
-          
+          {/* GREETING */}
+          <h2>Hello, {user.username}!</h2>
+            <h4>Are you ready to level up on your Math Skills?</h4>
 
           {/* GAME INSTRUCTIONS */}
           <div className="instructions">
@@ -75,19 +77,10 @@ const Dashboard = ({ user, loginUser, logoutUser, loggedIn }) => {
         <div className="content">
           <h1 className="title">DASHBOARD</h1>
           <div className="inner-content">
-            {/* GREETING */}
-            <div className="greeting">
-              <h1 className="logo-main">Level Up!</h1>
-              <h4>MATH LEARNING GAME</h4>
-              <br />
-              <h1>Hello, {user.username}!</h1>
-              <h4>Are you ready to level up on your Math Skills?</h4>
-            </div>
 
             {/* LEVELS */}
             <div className="level">
             {userLevel}
-              {/* {levelToggle ?  : <button onClick={setLevelToggle(true)}>Start</button>} */}
             
             </div>
           </div>
